@@ -9,7 +9,7 @@ class Tournament(db.Model):
     
 class TicketRequirement(db.Model):
     reqType = db.StringProperty(required=True)
-    tournament = db.ReferenceProperty(Tournament)
+    tournament = db.ReferenceProperty(Tournament, collection_name='requirements')
     dueDate = db.DateProperty(required=True)
     requirement = db.TextProperty(required=True)
     attachments = db.ListProperty()
