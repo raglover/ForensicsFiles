@@ -102,5 +102,12 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
      'appengine_django',
-     'busticket'
+     'busticket',
+     'coachapp',
+     'collaborator',
+     'judgeapp',
+     'opptracker',
+     'scheduler',
+     'studentapp',
+     'volunteerapp',
 )

@@ -1,8 +1,10 @@
+# Models for BusTicket Application
 from appengine_django.models import BaseModel
 from google.appengine.ext import db
 import datetime
+from studentapp.models import StudentInfo
 
-class Tournament(BaseModel):
+class Tournaments(BaseModel):
     name = db.StringProperty(required=True)
     location = db.StringProperty(required=True)
     startDate = db.DateProperty(required=True)
@@ -15,35 +17,21 @@ class Events(BaseModel):
     desc = db.TextProperty(required=True)
     #pseudo-element: requirements is a foreign key to TicketRequirements
 
-class TicketRequirement(BaseModel):
+class TicketRequirements(BaseModel):
     reqType = db.ReferenceProperty(Events, collection_name='requirements')
-    tournament = db.ReferenceProperty(Tournament, collection_name='requirements')
+    tournament = db.ReferenceProperty(Tournaments, collection_name='requirements')
     dueDate = db.DateProperty(required=True)
     requirement = db.TextProperty(required=True)
     attachments = db.ListProperty(basestring)
-    completedBy = db.ListProperty(db.Key) #This is a list of the users who have completed the requirement
 
-class UserInfo(BaseModel):
-    nflID = db.IntegerProperty()
-    goals = db.ListProperty(basestring)
-    about = db.TextProperty()
-    events = db.ListProperty(db.Key) #This is a list of the events in which the student participates, or for which the coach is responsible, keyed to Events
-    avatar = db.BlobProperty()
-    phone = db.PhoneNumber()
-
-class StudentInfo(UserInfo):
-    student = db.UserProperty()
-
-class coachInfo(UserInfo):
-    coach = db.UserProperty()
-
-class JudgeInfo(BaseModel):
-    name = db.StringProperty(required=True)
-    email = db.Email
-    phone = db.PhoneNumber()
-    events = db.ListProperty(db.key) #Which Events Can be Judged
-    rating = db.UserRating()
-    availability = db.ListProperty(db.Key) #For which Tournaments is the judge available?
-    relStudent = db.ReferenceProperty(StudentInfo, collection_name='judges')
-    notes = db.TextProperty()
-
+class CompletedReqs(BaseModel):
+    ticketID = db.ReferenceProperty(TicketRequirements, collection_name='completed')
+    studentID = db.ReferenceProperty(StudentInfo, collection_name='completedReqs')
+    completed_date = db.DateProperty(required=True)
+    
+    """
+    def valid_date():
+        q = TicketRequirements.filter('__key__ =', ticketID)
+        dueDate = q.dueDate.get()
+        if completed_date =< dueDate
+    """      
