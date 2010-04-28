@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/965/trunk/src/gdata/blogger
+END
+data.py
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/965/trunk/src/gdata/blogger/data.py
+END
+client.py
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/965/trunk/src/gdata/blogger/client.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/873/trunk/src/gdata/blogger/__init__.py
+END
+service.py
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/592/trunk/src/gdata/blogger/service.py
+END

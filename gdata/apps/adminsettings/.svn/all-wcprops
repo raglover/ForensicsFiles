@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/949/trunk/src/gdata/apps/adminsettings
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/850/trunk/src/gdata/apps/adminsettings/__init__.py
+END
+service.py
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/949/trunk/src/gdata/apps/adminsettings/service.py
+END

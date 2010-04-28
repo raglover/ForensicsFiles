@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/961/trunk/src/gdata/calendar
+END
+data.py
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/884/trunk/src/gdata/calendar/data.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/878/trunk/src/gdata/calendar/__init__.py
+END
+service.py
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/961/trunk/src/gdata/calendar/service.py
+END

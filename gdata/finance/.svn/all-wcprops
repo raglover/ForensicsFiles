@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/884/trunk/src/gdata/finance
+END
+data.py
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/884/trunk/src/gdata/finance/data.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/880/trunk/src/gdata/finance/__init__.py
+END
+service.py
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/713/trunk/src/gdata/finance/service.py
+END

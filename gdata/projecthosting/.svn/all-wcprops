@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/946/trunk/src/gdata/projecthosting
+END
+data.py
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/946/trunk/src/gdata/projecthosting/data.py
+END
+client.py
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/946/trunk/src/gdata/projecthosting/client.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/859/trunk/src/gdata/projecthosting/__init__.py
+END
