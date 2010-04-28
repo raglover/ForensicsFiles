@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Student Profile{% endblock %}
+
+{% block content %}
+	<p>Student: {{ student_name }}</p>
+	<p>NFL Member Number: {{ student_data.nflID }}</p>
+	<p>About Me: {{ student_data.about }}</p>
+	<p>My Phone Number: {{ student_data.phone }}</p>
+	<a href="/student/edit/{{ student_data.key.id }}">Edit My Info</a>
+{% endblock %}

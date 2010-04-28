@@ -1,11 +1,26 @@
 <!--This is the base template for the forensicsfiles application-->
+<!DOCTYPE='html'>
 <html>
 <body>
-<h1>Here's Some Important Shit:</h1>
+<h1>{% block title %}Here's Some Important Shit:{% endblock %}</h1>
+{% block content %}
 <ul>
-	<li>{{ tournaments }}</li>
-	<li>{{ open }}</li>
+	<li><h2>Upcoming Tournaments:</h2>
+		<ul>
+		{% for tournament in tournaments %}
+			<li>{{tournament.name}} - {{tournament.location}} : {{tournament.startDate|date:"M d "}} - {{tournament.endDate|date:"d, Y"}}</li>
+		{% endfor %}
+		</ul>
+	</li>
+	<li><h2>Next Tournament's Open Requirements</h2>
+		<ul>
+		{% for requirement in open %}
+			<li>{{ requirement }}</li>
+		{% endfor %}
+		</ul>
+	</li>
 	<li>{{ closed }}</li>
 <ul>
+{% endblock %}	
 </body>
 </html>

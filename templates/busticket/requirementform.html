@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Add a requirement for {{ tournament.name }}{% endblock %}
+
+{% block content %}
+	<p>Create Requirement:</p>
+	<form action="/requirements/add/{{tournament.key.id}}" method="POST">
+	<ul class="formfields">
+		{{ req_form.as_ul}}
+	</ul>
+	<input type="submit">
+	</form>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Student Profile Data{% endblock %}
+
+{% block content %}
+	{% if student_id %}
+	<p>Edit Profile:</p>
+	<form action="/student/edit/{{ student_id }}" method="POST">
+	{% else %}	
+	<p>Create Profile:</p>
+	<form action="/student/edit/" method="POST">
+	{% endif %}
+	<ul class="formfields">
+		{{ student_form.as_ul }}
+		{{ avatar_form.as_ul }}
+	</ul>
+	<input type="submit">
+	</form>
+{% endblock %}

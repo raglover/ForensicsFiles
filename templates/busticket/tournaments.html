@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Upcoming Tournaments:{% endblock %}
+{% block content %}
+	<ul>
+	{% for tournament in tournaments %}
+		<li>{{tournament.name}} - {{tournament.location}} : {{tournament.startDate|date:"M d "}} - {{tournament.endDate|date:"d, Y"}} <a href="/requirements/add/{{tournament.key.id}}">Add a Requirement</a> <a href="/tournaments/edit/{{tournament.key.id}}">Edit</a></li>
+	{% endfor %}
+	</ul>
+	<a href="/tournaments/edit/">Add a new Tournament</a>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Requirements for {{ tournament.name }}{% endblock %}
+
+{% block content %}
+	<dl>
+	{% for ticket in tickets %}
+		<dt>{{ticket.dueDate}}:</dt> <dd>{{ticket.requirement}}</dd>
+	{% endfor %}
+	</dl>
+	<a href="/requirements/add/{{tournament.key.id}}">Add Another Requirement</a>
+{% endblock %}

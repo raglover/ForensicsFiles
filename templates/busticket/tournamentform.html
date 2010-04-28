@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Add a tournament{% endblock %}
+
+{% block content %}
+	{% if tournament_id %}
+	<p>Edit Tournament:</p>
+	<form action="/tournaments/edit/{{ tournament_id }}" method="POST">
+	{% else %}	
+	<p>Create Tournament:</p>
+	<form action="/tournaments/edit/" method="POST">
+	{% endif %}
+	<ul class="formfields">
+		{{ tournament_form.as_ul }}
+	</ul>
+	<input type="submit">
+	</form>
+{% endblock %}

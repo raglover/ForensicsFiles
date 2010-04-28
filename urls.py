@@ -16,5 +16,12 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
     (r'^$', 'busticket.views.home'),
-    (r'^student/$', 'busticket.views.student'),
+    (r'^student/$', 'studentapp.views.display_student_data'),
+    (r'^student/edit/(\d*)', 'studentapp.views.edit_student'),
+    (r'^events/edit/(\d*)', 'busticket.views.event_form'),
+    (r'^events/', 'busticket.views.events'),
+    (r'^tournaments/edit/(\d*)', 'busticket.views.tournament_form'),
+    (r'^tournaments/', 'busticket.views.tournaments'),
+    (r'^requirements/add/(\d*)', 'busticket.views.add_requirement_form'),
+    (r'^requirements/(\d*)', 'busticket.views.requirements'),
 )

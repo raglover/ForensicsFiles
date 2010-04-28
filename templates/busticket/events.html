@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Event Glossary:{% endblock %}
+
+{% block content %}
+	<dl>
+	{% for event in events %}
+		<dt>{{event.name}}:</dt> <dd>{{event.desc}}</dd>
+	{% endfor %}
+	</dl>
+{% endblock %}

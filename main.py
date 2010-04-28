@@ -25,6 +25,8 @@ import os
 import sys
 import logging
 
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+
 from appengine_django import InstallAppengineHelperForDjango
 InstallAppengineHelperForDjango()
 

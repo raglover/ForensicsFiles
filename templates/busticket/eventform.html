@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Add an event{% endblock %}
+
+{% block content %}
+	{% if event_id %}
+	<p>Edit Event:</p>
+	<form action="/events/edit/{{ event_id }}" method="POST">
+	{% else %}	
+	<p>Create Event:</p>
+	<form action="/events/edit/" method="POST">
+	{% endif %}
+	<ul class="formfields">
+		{{ event_form.as_ul}}
+	</ul>
+	<input type="submit">
+	</form>
+{% endblock %}
