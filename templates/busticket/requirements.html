@@ -5,7 +5,7 @@
 {% block content %}
 	<dl>
 	{% for ticket in tickets %}
-		<dt>{{ticket.dueDate}}:</dt> <dd>{{ticket.requirement}}</dd>
+		<dt>{{ticket.reqType.name}}:</dt> <dd>{{ticket.requirement}} Due: {{ticket.dueDate}}</dd>
 	{% endfor %}
 	</dl>
 	<a href="/requirements/add/{{tournament.key.id}}">Add Another Requirement</a>
