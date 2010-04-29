@@ -12,14 +12,18 @@
 		{% endfor %}
 		</ul>
 	</li>
-	<li><h2>Next Tournament's Open Requirements</h2>
+	<li><h2>Requirements for {{upcoming.name}}</h2>
 		<ul>
-		{% for requirement in open %}
-			<li>{{ requirement }}</li>
+		{% for requirement in upcoming.requirements %}
+			<li>{{ requirement.reqType.name }}: {{ requirement.requirement }}</li>
 		{% endfor %}
 		</ul>
 	</li>
-	<li>{{ closed }}</li>
+	<li><h2>Requirements you've completed:</h2>
+		<ul>
+		<li>{{ closed }}</li>
+		</ul>
+	</li>
 <ul>
 {% endblock %}	
 </body>

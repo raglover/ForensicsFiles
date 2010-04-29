@@ -16,11 +16,11 @@ import gdata.calendar.service
 
 def home(request):
     tournaments = _getTournamentSchedule()
-    openTickets = _getTournamentRequirements()
+    upcoming = _getCurrentTournament()
     completedTickets = _getCompletedReqs()
     return render_to_response(
         'base.html',
-        { 'tournaments' : tournaments, 'open' : openTickets, 'closed' : completedTickets }
+        { 'tournaments' : tournaments, 'upcoming' : upcoming, 'closed' : completedTickets }
     )
 
 def tournament_form(request, tournament_id=None):
@@ -141,19 +141,7 @@ def _getStudentEvents():
     else:
         events = "No Events! Damn."
     return events
-    
-def _getTournamentRequirements():
-    reqList = []
-    tournament = _getCurrentTournament()
-    events = _getStudentEvents()
-    if tournament:
-        for requirement in tournament.requirements:
-            if str(requirement.reqType) in str(events):
-                reqList = reqList.append(requirement)
-    else:
-        reqList = "No tournaments, no requirements, add some data, lazy!"
-    return reqList
-    
+        
 """
 NOTE: This will have to be updated and made to work,eventually. But not for now.
 def add_gcal_event(request, event):
