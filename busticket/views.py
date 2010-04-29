@@ -111,6 +111,8 @@ def events(request):
         }
     )
 
+def tournament_entry(request, tournament_id=None):
+    pass
 
 #These are private methods, used internally for retrieving data. 
 def _getCompletedReqs():

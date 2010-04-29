@@ -8,9 +8,16 @@ from coachapp.models import CoachInfo
 class Tournaments(BaseModel):
     name = db.StringProperty(required=True)
     location = db.StringProperty(required=True)
+    entryDeadline = db.DateProperty(required=True)
     startDate = db.DateProperty(required=True)
     endDate = db.DateProperty(required=True)
     events = db.ListProperty(db.Key) #This is a list of the Events to be offered at any given tournament, keyed to Events
+    individualDebateEntryLimit = db.IntegerProperty(required=True, default=1)
+    individualIeEntryLimit = db.IntegerProperty(required=True, default=2)
+    individualCongressEntryLimit = db.IntegerProperty(required=True, default=1)
+    debateEntryMax = db.IntegerProperty(required=True, default=6)
+    ieEntryMax = db.IntegerProperty(required=True, default=6)
+    congressEntryMax = db.IntegerProperty(required=True, default=6)
     gcalEditLink = db.TextProperty()
     gcalEventLink = db.TextProperty()
     gcalEventXml = db.TextProperty()
@@ -19,6 +26,7 @@ class Tournaments(BaseModel):
 class Events(BaseModel):
     name = db.StringProperty(required=True)
     desc = db.TextProperty(required=True)
+    eventType = db.TextProperty(required=True)
     #pseudo-element: requirements is a foreign key to TicketRequirements
 
 class TicketRequirements(BaseModel):
@@ -32,5 +40,12 @@ class CompletedReqs(BaseModel):
     ticketID = db.ReferenceProperty(TicketRequirements, collection_name='completed')
     studentID = db.ReferenceProperty(StudentInfo, collection_name='completedReqs')
     completed_date = db.DateProperty(required=True)
-    coachID = db.ReferenceProperty()
-   
+    coachID = db.ReferenceProperty(CoachInfo, collection_name='signedOff')
+
+class Entries(BaseModel):
+    student = db.ReferenceProperty(StudentInfo, collection_name='entries')
+    event = db.ReferenceProperty(Events, collection_name='entries')
+    tournament = db.ReferenceProperty(Tournaments, collection_name='entries')
+    isTeamEvent = db.BooleanProperty(default=False)
+    partner = db.ReferenceProperty(StudentInfo, collection_name='partner')
+    otherInfo = db.TextProperty()
