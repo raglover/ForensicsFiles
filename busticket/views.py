@@ -18,9 +18,11 @@ def home(request):
     tournaments = _getTournamentSchedule()
     upcoming = _getCurrentTournament()
     completedTickets = _getCompletedReqs()
+    login = users.create_login_url('/')
+    logout = users.create_login_url('/')
     return render_to_response(
         'base.html',
-        { 'tournaments' : tournaments, 'upcoming' : upcoming, 'closed' : completedTickets }
+        { 'tournaments' : tournaments, 'upcoming' : upcoming, 'closed' : completedTickets, 'login' : login, 'logout': logout }
     )
 
 def tournament_form(request, tournament_id=None):
@@ -90,7 +92,7 @@ def add_requirement_form(request, tournament_id=None):
     
 def requirements(request, tournament_id=None):
     tournament = models.Tournaments.get_by_id(int(tournament_id))
-    tickets = tournament.requirements
+    tickets = tournament.requirements #Order By Event then by Date
     return render_to_response('busticket/requirements.html',
         { 'tournament' : tournament, 'tickets' : tickets }
     )

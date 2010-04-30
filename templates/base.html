@@ -3,7 +3,12 @@
 <html>
 <body>
 <h1>{% block title %}Team Overview:{% endblock %}</h1>
+
 {% block content %}
+<ul>
+	<li><a href="{{login}}">Log In</a></li>
+	<li><a href="{{logout}}">Log Out</a></li>
+</ul>
 <ul>
 	<li><h2>Upcoming Tournaments:</h2>
 		<ul>
