@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>busticket/views.py</string>
+	<string>templates/busticket/entries.html</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -43,7 +43,7 @@
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>159</integer>
+			<integer>102</integer>
 		</dict>
 		<key>busticket/models.py</key>
 		<dict>
@@ -57,21 +57,21 @@
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>2</integer>
+			<integer>6</integer>
 		</dict>
 		<key>busticket/views.py</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>37</integer>
+				<integer>24</integer>
 				<key>line</key>
-				<integer>21</integer>
+				<integer>146</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>5</integer>
+			<integer>102</integer>
 		</dict>
 		<key>studentapp/models.py</key>
 		<dict>
@@ -115,6 +115,50 @@
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
+		<key>templates/busticket/entries.html</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>19</integer>
+				<key>line</key>
+				<integer>6</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>templates/busticket/entryform.html</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>14</integer>
+				<key>line</key>
+				<integer>11</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>0</integer>
+				<key>line</key>
+				<integer>0</integer>
+			</dict>
+		</dict>
 		<key>templates/busticket/eventform.html</key>
 		<dict>
 			<key>caret</key>
@@ -148,14 +192,30 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>8</integer>
 				<key>line</key>
-				<integer>0</integer>
+				<integer>16</integer>
 			</dict>
+			<key>columnSelection</key>
+			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>1</integer>
+				<key>line</key>
+				<integer>5</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>8</integer>
+				<key>line</key>
+				<integer>16</integer>
+			</dict>
 		</dict>
 		<key>templates/studentapp/studentform.html</key>
 		<dict>
@@ -189,11 +249,13 @@
 	<key>openDocuments</key>
 	<array>
 		<string>busticket/views.py</string>
+		<string>templates/busticket/entries.html</string>
+		<string>templates/busticket/entryform.html</string>
+		<string>templates/busticket/tournamentform.html</string>
 		<string>templates/base.html</string>
 		<string>busticket/forms.py</string>
 		<string>templates/busticket/events.html</string>
 		<string>busticket/models.py</string>
-		<string>templates/busticket/tournamentform.html</string>
 		<string>studentapp/models.py</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>

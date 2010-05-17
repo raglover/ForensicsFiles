@@ -26,7 +26,8 @@ class Tournaments(BaseModel):
 class Events(BaseModel):
     name = db.StringProperty(required=True)
     desc = db.TextProperty(required=True)
-    eventType = db.TextProperty(required=True)
+    eventType = db.StringProperty(required=True)
+    hasPartner = db.BooleanProperty()
     #pseudo-element: requirements is a foreign key to TicketRequirements
 
 class TicketRequirements(BaseModel):
@@ -46,6 +47,5 @@ class Entries(BaseModel):
     student = db.ReferenceProperty(StudentInfo, collection_name='entries')
     event = db.ReferenceProperty(Events, collection_name='entries')
     tournament = db.ReferenceProperty(Tournaments, collection_name='entries')
-    isTeamEvent = db.BooleanProperty(default=False)
     partner = db.ReferenceProperty(StudentInfo, collection_name='partner')
     otherInfo = db.TextProperty()

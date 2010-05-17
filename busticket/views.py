@@ -17,12 +17,13 @@ import gdata.calendar.service
 def home(request):
     tournaments = _getTournamentSchedule()
     upcoming = _getCurrentTournament()
+    reqs = upcoming.requirements.order('reqType').order('dueDate')
     completedTickets = _getCompletedReqs()
     login = users.create_login_url('/')
     logout = users.create_login_url('/')
     return render_to_response(
         'base.html',
-        { 'tournaments' : tournaments, 'upcoming' : upcoming, 'closed' : completedTickets, 'login' : login, 'logout': logout }
+        { 'tournaments' : tournaments, 'upcoming' : upcoming, 'requirements' : reqs, 'closed' : completedTickets, 'login' : login, 'logout': logout }
     )
 
 def tournament_form(request, tournament_id=None):
@@ -75,16 +76,15 @@ def event_form(request, event_id=None):
 def add_requirement_form(request, tournament_id=None):
     if request.method == 'POST':
         tournament = models.Tournaments.get_by_id(int(tournament_id))
-        ticket_form = forms.TicketForm(tournament_id, request.POST)
+        ticket_form = forms.TicketForm(tournament.key(), request.POST)
         if ticket_form.is_valid():
             ticket = ticket_form.save(commit=False)
-            ticket.tournament = tournament.key()
             ticket.put()
             response = '/requirements/%s' % tournament_id
             return HttpResponseRedirect(response)
     else:
         tournament = models.Tournaments.get_by_id(int(tournament_id))
-        ticket_form = forms.TicketForm(tournament_id)
+        ticket_form = forms.TicketForm(tournament.key())
     return render_to_response('busticket/requirementform.html', {
         'tournament' : tournament,
         'req_form' : ticket_form
@@ -92,7 +92,7 @@ def add_requirement_form(request, tournament_id=None):
     
 def requirements(request, tournament_id=None):
     tournament = models.Tournaments.get_by_id(int(tournament_id))
-    tickets = tournament.requirements #Order By Event then by Date
+    tickets = tournament.requirements.order('reqType').order('dueDate')
     return render_to_response('busticket/requirements.html',
         { 'tournament' : tournament, 'tickets' : tickets }
     )
@@ -106,15 +106,42 @@ def tournaments(request):
     )
 
 def events(request):
-    events = models.Events.all()
+    events = models.Events.all().order('eventType').order('name')
     return render_to_response(
         'busticket/events.html', {
         'events' : events
         }
     )
+    
+def entries(request, tournament_id=None):
+    tournament = models.Tournaments.get_by_id(int(tournament_id))
+    student = StudentInfo.get().filter('userID =', users.get_current_user())
+    entries = models.Entries.all().filter('tournament =', tournament.key()).filter('student =', student.key())
+    return render_to_response(
+        'busticket/entries.html', {
+        'entries' : entries,
+        'tournament' : tournament,
+        }
+    )
 
 def tournament_entry(request, tournament_id=None):
-    pass
+    if request.method == 'POST':
+        tournament = models.Tournaments.get_by_id(int(tournament_id))
+        student = StudentInfo.get().filter('userID = ', users.get_current_user())
+        entry_form = forms.EntryForm(tournament.key(), request.POST)
+        if entry_form.is_valid():
+            entry = entry_form.save(commit=False)
+            entry.student = student.key()
+            entry.put()
+            response = '/entries/%s' % tournament_id
+            return HttpResponseRedirect(response)
+    else:
+        tournament = models.Tournaments.get_by_id(int(tournament_id))
+        entry_form = forms.EntryForm(tournament_id)
+    return render_to_response('busticket/entryform.html', {
+        'tournament' : tournament,
+        'entry_form' : entry_form,
+    })
 
 #These are private methods, used internally for retrieving data. 
 def _getCompletedReqs():

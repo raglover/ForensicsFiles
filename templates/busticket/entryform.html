@@ -1,0 +1,12 @@
+{% extends base.html %}
+
+{% block title %}Enter an Event for {{ tournament.name }}:{% endblock %}
+
+{% block content %}
+	<form action="/entries/add/{{ tournament_id }}" method="POST">
+	<ul class="formfields">
+		{{ entry_form.as_ul }}
+	</ul>
+	<input type="submit">
+	</form>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends base.html %}
+
+{% block title %}Your Entries for {{ tournament.name }}:{% endblock %}
+
+{% block content %}
+	<ul class="entries">
+		{% for entry in entries %}
+		<li><h3>{{ entry.event.name }}:</h3>
+			{% if entry.hasPartner %}
+				<p>{{ entry.partner.userID.nickname }}</p>
+			{% endif %}
+			{% if entry.otherInfo %}
+				<p>{{ entry.otherInfo }}</p>
+			{% endif %}
+		</li>
+		{% endfor %}
+	</ul>
+{% endblock %}

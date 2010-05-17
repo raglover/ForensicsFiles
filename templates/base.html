@@ -19,8 +19,8 @@
 	</li>
 	<li><h2>Requirements for {{upcoming.name}}</h2>
 		<ul>
-		{% for requirement in upcoming.requirements %}
-			<li>{{ requirement.reqType.name }}: {{ requirement.requirement }}</li>
+		{% for requirement in requirements %}
+			<li>{{ requirement.reqType.name }}: {{ requirement.requirement }} - Due: {{ requirement.dueDate }}</li>
 		{% endfor %}
 		</ul>
 	</li>

@@ -41,7 +41,7 @@ def check_entries(tournament):
     return available_events
 
 def get_event_choices(tournament_id, entry_check=False):
-    tournament = models.Tournaments.get_by_id(int(tournament_id))
+    tournament = db.get(tournament_id)
     if not entry_check:
         listed_events = tournament.events
         choices = [(m.key(), m.name) for m in db.get(listed_events)]
@@ -51,20 +51,9 @@ def get_event_choices(tournament_id, entry_check=False):
     return choices
 
 def get_partner_choices(tournament_id):
-    choices = []
-    students = []
-    tournament = models.Tournaments.get_by_id(int(tournament_id))
-    entries = tournament.entries
-    partners = [entry.partner.userID for entry in entries]
-    user = users.get_current_user()
-    if user in partners:
-        for partner in partners:
-            if user == partner:
-                students.append(partner)
-        choices = [(p.key(), p.nickname) for p in students]
-    else:
-        students = StudentInfo.all()
-        choices = [(p.key(), p.userID.nickname) for p in students]
+
+    students = StudentInfo.all()
+    choices = [(p.key(), p.userID.nickname) for p in students]
     return choices
 
 """
@@ -74,7 +63,7 @@ def get_partner_choices(tournament_id):
 class TournamentForm(djangoforms.ModelForm):
     events = ListPropertyChoice(
         widget=forms.CheckboxSelectMultiple(), 
-        choices=[(m.key(), m.name) for m in models.Events.all()]
+        choices=[(m.key(), m.name) for m in models.Events.all().order('eventType')]
     )
     class Meta:
         model = models.Tournaments
@@ -88,35 +77,40 @@ class EventForm(djangoforms.ModelForm):
         model = models.Events
 
 class TicketForm(djangoforms.ModelForm):
-    
+    tournament = forms.CharField(widget=forms.HiddenInput())
     reqType = forms.ChoiceField()
-    #TODO: Add validator for date (can't be higher than tournament.entryDeadline)
     class Meta:
         model = models.TicketRequirements
-        exclude = ['tournament', 'attachments'] #TODO: Need to add ability to create attachments on this form, as a URL list(GData?)
+        exclude = ['attachments'] #TODO: Need to add ability to create attachments on this form, as a URL list(GData?)
 
     def __init__(self, tournament_id, *args, **kwargs):
         super(TicketForm, self).__init__(*args, **kwargs)
         self.tournament_id = tournament_id
         self.fields = self.base_fields
         self.fields['reqType'].choices = get_event_choices(self.tournament_id)
+        self.fields['tournament'].initial = self.tournament_id
+        
+    def clean(self):
+        data = self.cleaned_data
+        tournament = db.get(data['tournament'])
+        dueDate = data['dueDate']
+        if (dueDate >= tournament.entryDeadline):
+            raise forms.ValidationError("Due Date cannot coincide with tournament entry deadline.")
+        return data
         
 class EntryForm(djangoforms.ModelForm):
+
     event = forms.ChoiceField()
-    isTeamEvent = forms.ChoiceField(
-        widget = forms.CheckboxInput(),
-        label = 'Team Event?',
-    )
     partner = forms.ChoiceField()
     class Meta:
         model = models.Entries
         exclude = ['student']
-        
+    
     def __init__(self, tournament_id, *args, **kwargs):
         super(EntryForm, self).__init__(*args, **kwargs)
         self.tournament_id = tournament_id
         self.fields = self.base_fields
-        self.fields['events'].choices = get_event_choices(self.tournament_id)
+        self.fields['event'].choices = get_event_choices(self.tournament_id)
         self.fields['partner'].choices = get_partner_choices(self.tournament_id)
     
     def clean_events(self):
@@ -159,6 +153,12 @@ class EntryForm(djangoforms.ModelForm):
         partner_duo_events = []
         partner_entries = models.Entries.all().filter('tournament =', tournament.key()).filter('student =', partner_choice.key())
 
+        # Check to see if a partner is required or not.
+        if (current_event.hasPartner) and (not data['partner']):
+            raise forms.ValidationError("You must select a partner for this event.")
+        if (not current_event.hasPartner) and (data['partner']):
+            raise forms.ValidationError("You cannot select a partner for this event.")
+        
         # Check to see that individual didn't choose her/himself for a partner. 
         if partner_choice.userID == users.get_current_user():
             raise forms.ValidationError("You cannot choose yourself as a partner!")
@@ -190,16 +190,15 @@ class EntryForm(djangoforms.ModelForm):
         (ie_count >= tournament.individualDebateEntryLimit) and
         (current_event.name not in partner_duo_events)):
             raise forms.ValidationError("This partner can't have any additional duo events.")
-        
+
         return data
     
     def clean(self):
         data = self.cleaned_data
-        req_partner = data['hasPartner']
-        partner = data['partner']
-        # add validator: Can't enter after tournament.entryDeadline.
-        if (req_partner) and (not partner):
-            raise forms.ValidationError("You must select a partner for this event.")
-        if (not req_partner) and (partner):
-            raise forms.ValidationError("You cannot select a partner for this event.")
+        tournament = db.get(data['tournament'])
+        
+        if (datetime.now > tournament.entryDeadline):
+            raise forms.ValidationError("You cannot enter after the deadline. Sorry!")
+
         return data
+    

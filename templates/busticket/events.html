@@ -5,7 +5,7 @@
 {% block content %}
 	<dl>
 	{% for event in events %}
-		<dt>{{event.name}}:</dt> <dd>{{event.desc}}</dd>
+		<dt>{{event.name}}:</dt> <dd>{{event.desc}} <a href="/events/edit/{{event.key.id}}">Edit Event</a></dd>
 	{% endfor %}
 	</dl>
 	<a href="/events/edit/">Add Another Event</a>
