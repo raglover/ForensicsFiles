@@ -6,7 +6,7 @@ from google.appengine.api import users
 # Create your models here.
 
 class PersonInfo(polymodel.PolyModel):
-    phoneNumber = db.PhoneNumberProperty()
-    phoneType = db.StringProperty(choices=['cell', 'home', 'work'])
-    address = db.PostalAddressProperty()
-    email = db.EmailProperty()
+    phoneNumber = db.PhoneNumberProperty(required=True)
+    phoneType = db.StringProperty(required=True, choices=['cell', 'home', 'work'])
+    address = db.PostalAddressProperty(required=True)
+    email = db.EmailProperty(required=True)

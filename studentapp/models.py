@@ -27,6 +27,8 @@ class StudentGoals(BaseModel):
 class ParentInfo(PersonInfo):
     help_options = ['Judging', 'Coaching', 'Fundraising', 'Team Care', 'Other']
     relationship_options = ['Mother', 'Father', 'Legal Guardian']
+    firstName = db.StringProperty(required=True)
+    lastName = db.StringProperty(required=True)
     student = db.ReferenceProperty(StudentInfo, collection_name="parents")
     relationship = db.StringProperty(choices=relationship_options)
     willHelp = db.BooleanProperty(verbose_name="Are You Willing to Volunteer?")

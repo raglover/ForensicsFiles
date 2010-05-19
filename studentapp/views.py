@@ -2,6 +2,7 @@
 from google.appengine.api import users
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
+from django.forms.models import modelformset_factory, inlineformset_factory
 import models
 from busticket.models import Events
 import forms
@@ -34,10 +35,11 @@ def edit_student(request, student_id=None):
             student = models.StudentInfo.get_by_id(int(student_id))
             add_form = forms.StudentForm(instance=student)
         else:
-            add_form = forms.StudentForm()
+            StudentFormset = inlineformset_factory(models.StudentInfo, models.StudentAvatar)
+            formset = StudentFormset()
     return render_to_response('studentapp/studentform.html', {
         'student_id' : student_id,
-        'student_form' : add_form,
+        'student_form' : formset,
     })
 
 def display_student_data(request):

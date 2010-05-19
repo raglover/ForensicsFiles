@@ -13,9 +13,17 @@ class StudentForm(djangoforms.ModelForm):
         )
     class Meta:
         model = models.StudentInfo
-        exclude = ['userID']
+        exclude = ['userID','class']
 
 class AvatarForm(djangoforms.ModelForm):
     class Meta:
         model = models.StudentAvatar
         exclude = ['student']
+        
+class ParentForm(djangoforms.ModelForm):
+    volunteerOps = forms.MultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple(), 
+        )
+    class Meta:
+        model = models.StudentInfo
+        exclude = ['student','class']
