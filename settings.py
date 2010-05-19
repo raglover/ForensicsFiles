@@ -1,113 +1,138 @@
-# Copyright 2008 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# -*- coding: utf-8 -*-
+from ragendja.settings_pre import *
 
-# Django settings for google-app-engine-django project.
+# Increase this when you update your media on the production site, so users
+# don't have to refresh their cache. By setting this your MEDIA_URL
+# automatically becomes /media/MEDIA_VERSION/
+MEDIA_VERSION = 1
 
-import os
+# By hosting media on a different domain we can get a speedup (more parallel
+# browser connections).
+#if on_production_server or not have_appserver:
+#    MEDIA_URL = 'http://media.mydomain.com/media/%d/'
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+# Add base media (jquery can be easily added via INSTALLED_APPS)
+COMBINE_MEDIA = {
+    'combined-%(LANGUAGE_CODE)s.js': (
+        # See documentation why site_data can be useful:
+        # http://code.google.com/p/app-engine-patch/wiki/MediaGenerator
+        '.site_data.js',
+    ),
+    'combined-%(LANGUAGE_DIR)s.css': (
+        'global/look.css',
+    ),
+}
 
-ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
-)
-
-MANAGERS = ADMINS
-
-DATABASE_ENGINE = 'appengine'  # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = ''             # Or path to database file if using sqlite3.
-DATABASE_USER = ''             # Not used with sqlite3.
-DATABASE_PASSWORD = ''         # Not used with sqlite3.
-DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
-
-# Local time zone for this installation. Choices can be found here:
-# http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-# although not all choices may be available on all operating systems.
-# If running in a Windows environment this must be set to the same as your
-# system time zone.
-TIME_ZONE = 'UTC'
-
-# Language code for this installation. All choices can be found here:
-# http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
-
-SITE_ID = 1
-
-# If you set this to False, Django will make some optimizations so as not
-# to load the internationalization machinery.
-USE_I18N = True
-
-# Absolute path to the directory that holds media.
-# Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = ''
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash if there is a path component (optional in other cases).
-# Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = ''
-
-# URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
-# trailing slash.
-# Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
+# Change your email settings
+if on_production_server:
+    DEFAULT_FROM_EMAIL = 'rglover@mcclintockspeech.com'
+    SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'hvhxfm5u=^*v&doo#oq8x*eg8+1&9sxbye@=umutgn^t_sg_nx'
 
-# Ensure that email is not sent via SMTP by default to match the standard App
-# Engine SDK behaviour. If you want to sent email via SMTP then add the name of
-# your mailserver here.
-EMAIL_HOST = ''
+#ENABLE_PROFILER = True
+#ONLY_FORCED_PROFILE = True
+#PROFILE_PERCENTAGE = 25
+#SORT_PROFILE_RESULTS_BY = 'cumulative' # default is 'time'
+# Profile only datastore calls
+#PROFILE_PATTERN = 'ext.db..+\((?:get|get_by_key_name|fetch|count|put)\)'
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.load_template_source',
-    'django.template.loaders.app_directories.load_template_source',
-#     'django.template.loaders.eggs.load_template_source',
-)
+# Enable I18N and set default language to 'en'
+USE_I18N = True
+LANGUAGE_CODE = 'en'
 
-MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
-#    'django.contrib.sessions.middleware.SessionMiddleware',
-#    'django.contrib.auth.middleware.AuthenticationMiddleware',
-#    'django.middleware.doc.XViewMiddleware',
+# Restrict supported languages (and JS media generation)
+LANGUAGES = (
+    ('en', 'English'),
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-#   'django.core.context_processors.auth',
-    'django.core.context_processors.debug',
+    'django.core.context_processors.auth',
+    'django.core.context_processors.media',
+    'django.core.context_processors.request',
     'django.core.context_processors.i18n',
-#    'django.core.context_processors.media',  # 0.97 only.
-#    'django.core.context_processors.request',
 )
 
-ROOT_URLCONF = 'urls'
-
-ROOT_PATH = os.path.dirname(__file__)
-TEMPLATE_DIRS = (
-    os.path.join(ROOT_PATH, 'templates')
+MIDDLEWARE_CLASSES = (
+    'ragendja.middleware.ErrorMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    # Django authentication
+    #'django.contrib.auth.middleware.AuthenticationMiddleware',
+    # Google authentication
+    'ragendja.auth.middleware.GoogleAuthenticationMiddleware',
+    # Hybrid Django/Google authentication
+    #'ragendja.auth.middleware.HybridAuthenticationMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'ragendja.sites.dynamicsite.DynamicSiteIDMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
 )
+
+# Google authentication
+AUTH_USER_MODULE = 'ragendja.auth.google_models'
+AUTH_ADMIN_MODULE = 'ragendja.auth.google_admin'
+# Hybrid Django/Google authentication
+#AUTH_USER_MODULE = 'ragendja.auth.hybrid_models'
+
+LOGIN_URL = '/account/login/'
+LOGOUT_URL = '/account/logout/'
+LOGIN_REDIRECT_URL = '/'
 
 INSTALLED_APPS = (
-     'appengine_django',
-     'busticket',
-     'coachapp',
-     'collaborator',
-     'judgeapp',
-     'opptracker',
-     'scheduler',
-     'studentapp',
-     'volunteerapp',
+    # Add jquery support (app is in "common" folder). This automatically
+    # adds jquery to your COMBINE_MEDIA['combined-%(LANGUAGE_CODE)s.js']
+    # Note: the order of your INSTALLED_APPS specifies the order in which
+    # your app-specific media files get combined, so jquery should normally
+    # come first.
+    'jquery',
+    'django.contrib.auth',
+    'django.contrib.sessions',
+    'django.contrib.admin',
+    'django.contrib.webdesign',
+    'django.contrib.flatpages',
+    'django.contrib.redirects',
+    'django.contrib.sites',
+    'appenginepatcher',
+    'ragendja',
+    'mediautils',
+    'busticket',
+    'coachapp',
+    'collaborator',
+    'judgeapp',
+    'opptracker',
+    'scheduler',
+    'studentapp',
+    'volunteerapp',
 )
+
+# List apps which should be left out from app settings and urlsauto loading
+IGNORE_APP_SETTINGS = IGNORE_APP_URLSAUTO = (
+    # Example:
+    # 'django.contrib.admin',
+    # 'django.contrib.auth',
+    # 'yetanotherapp',
+)
+
+# Remote access to production server (e.g., via manage.py shell --remote)
+DATABASE_OPTIONS = {
+    # Override remoteapi handler's path (default: '/remote_api').
+    # This is a good idea, so you make it not too easy for hackers. ;)
+    # Don't forget to also update your app.yaml!
+    #'remote_url': '/remote-secret-url',
+
+    # !!!Normally, the following settings should not be used!!!
+
+    # Always use remoteapi (no need to add manage.py --remote option)
+    #'use_remote': True,
+
+    # Change appid for remote connection (by default it's the same as in
+    # your app.yaml)
+    #'remote_id': 'otherappid',
+
+    # Change domain (default: <remoteid>.appspot.com)
+    #'remote_host': 'bla.com',
+}
+
+from ragendja.settings_post import *

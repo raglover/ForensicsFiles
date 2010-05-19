@@ -1,11 +1,10 @@
 # Models for BusTicket Application
-from appengine_django.models import BaseModel
 from google.appengine.ext import db
 import datetime
 from studentapp.models import StudentInfo
 from coachapp.models import CoachInfo
 
-class Tournaments(BaseModel):
+class Tournaments(db.Model):
     name = db.StringProperty(required=True)
     location = db.StringProperty(required=True)
     entryDeadline = db.DateProperty(required=True)
@@ -23,27 +22,27 @@ class Tournaments(BaseModel):
     gcalEventXml = db.TextProperty()
     #pseudo-element: requirements is a foreign key to TicketRequirements
 
-class Events(BaseModel):
+class Events(db.Model):
     name = db.StringProperty(required=True)
     desc = db.TextProperty(required=True)
     eventType = db.StringProperty(required=True)
     hasPartner = db.BooleanProperty()
     #pseudo-element: requirements is a foreign key to TicketRequirements
 
-class TicketRequirements(BaseModel):
+class TicketRequirements(db.Model):
     reqType = db.ReferenceProperty(Events, collection_name='requirements')
     tournament = db.ReferenceProperty(Tournaments, collection_name='requirements')
     dueDate = db.DateProperty(required=True)
     requirement = db.TextProperty(required=True)
     attachments = db.ListProperty(basestring)
 
-class CompletedReqs(BaseModel):
+class CompletedReqs(db.Model):
     ticketID = db.ReferenceProperty(TicketRequirements, collection_name='completed')
     studentID = db.ReferenceProperty(StudentInfo, collection_name='completedReqs')
     completed_date = db.DateProperty(required=True)
     coachID = db.ReferenceProperty(CoachInfo, collection_name='signedOff')
 
-class Entries(BaseModel):
+class Entries(db.Model):
     student = db.ReferenceProperty(StudentInfo, collection_name='entries')
     event = db.ReferenceProperty(Events, collection_name='entries')
     tournament = db.ReferenceProperty(Tournaments, collection_name='entries')

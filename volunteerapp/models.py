@@ -1,9 +1,8 @@
 # Models for VolunteerApp Application
-from appengine_django.models import BaseModel
 from google.appengine.ext import db
 
 # Create your models here.
-class VolunteerInfo(BaseModel):
+class VolunteerInfo(db.Model):
     name = db.StringProperty(required=True)
     email = db.Email
     phone = db.StringProperty()

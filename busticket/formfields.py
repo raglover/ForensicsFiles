@@ -1,5 +1,5 @@
 from django.forms.fields import MultipleChoiceField
-from appengine_django.models import BaseModel
+from google.appengine.ext import db
 
 class ListPropertyChoice(MultipleChoiceField):
 
@@ -8,5 +8,5 @@ class ListPropertyChoice(MultipleChoiceField):
         new_value = super(ListPropertyChoice, self).clean(value)
         key_list = []
         for k in new_value:
-            key_list.append(BaseModel.get(k).key())
+            key_list.append(db.Model.get(k).key())
         return key_list

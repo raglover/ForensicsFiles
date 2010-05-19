@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.forms.models import modelformset_factory, inlineformset_factory
 import models
-from busticket.models import Events
+import busticket.models
 import forms
 import datetime
 import atom

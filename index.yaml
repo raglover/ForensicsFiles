@@ -25,3 +25,14 @@ indexes:
   - name: tournament
   - name: reqType
   - name: dueDate
+
+- kind: busticket_events
+  properties:
+  - name: eventType
+  - name: name
+
+- kind: busticket_ticketrequirements
+  properties:
+  - name: tournament
+  - name: reqType
+  - name: dueDate

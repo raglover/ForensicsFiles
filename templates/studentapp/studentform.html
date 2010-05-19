@@ -11,8 +11,9 @@
 	<form type="multipart/form-data" action="/student/edit/" method="POST">
 	{% endif %}
 	<ul class="formfields">
-		{% for forms in student_form %}
-		{{ student_form.as_ul }}
+
+		{{ student_form }}
+
 	</ul>
 	<input type="submit">
 	</form>

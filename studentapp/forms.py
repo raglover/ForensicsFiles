@@ -2,14 +2,15 @@
 from google.appengine.ext.db import djangoforms
 from django import forms
 from busticket.formfields import ListPropertyChoice
-from busticket.models import Events
+import busticket.models
 import models
 
 
 class StudentForm(djangoforms.ModelForm):
+    event_options = [(e.key(), e.name) for e in busticket.models.Events.all()]
     events = ListPropertyChoice(
         widget=forms.CheckboxSelectMultiple(), 
-        choices=[(m.key(), m.name) for m in Events.all()]
+        choices=event_options
         )
     class Meta:
         model = models.StudentInfo
